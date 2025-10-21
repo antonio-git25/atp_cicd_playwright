@@ -1,10 +1,18 @@
+from components.sidebar_list_item_component import SidebarListItemComponent
 from pages.base_page import BasePage
 from playwright.sync_api import Page, expect
+
+from components.navbar_component import NavbarComponent
+from components.sidebar_component import SidebarComponent
 
 
 class DashboardPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
+        # Добавляем компонент Navbar and sidebar
+        self.navbar = NavbarComponent(page)
+        self.sidebar = SidebarComponent(page)
+
         # Локаторы элементов страницы
         self.dashboard_title = page.get_by_test_id('dashboard-toolbar-title-text')
 
@@ -22,8 +30,8 @@ class DashboardPage(BasePage):
 
 
     def check_visible_dashboard_title(self):
-            expect(self.dashboard_title).to_be_visible()
-            expect(self.dashboard_title).to_have_text("Dashboard")
+        expect(self.dashboard_title).to_be_visible()
+        expect(self.dashboard_title).to_have_text("Dashboard")
 
     def check_visible_students_chart(self):
         expect(self.students_title).to_be_visible()
