@@ -1,15 +1,26 @@
 import pytest
 from playwright.sync_api import Playwright, Page
+from _pytest.fixtures import SubRequest
 
-from fixtures.pages import registration_page
+import allure
+from allure_commons.types import AttachmentType
+
 from pages.registration_page import RegistrationPage
 
 
 @pytest.fixture
-def chromium_page(playwright: Playwright) -> Page:
+def chromium_page(request: SubRequest, playwright: Playwright) -> Page:
     browser = playwright.chromium.launch(headless=False, slow_mo=600)
-    yield browser.new_page()
+    context = browser.new_context(record_video_dir='./videos')
+    context.tracing.start(screenshots=True, snapshots=True, sources=True)
+    page = context.new_page()
+
+    yield page
+
+    context.tracing.stop(path=f'./tracing/{request.node.name}.zip')
     browser.close()
+    allure.attach.file(f'./tracing/{request.node.name}.zip', name='trace', extension='zip')
+    allure.attach.file(page.video.path(), name='video', attachment_type=AttachmentType.WEBM)
 
 
 @pytest.fixture(scope="session")
@@ -29,8 +40,15 @@ def initialize_browser_state(playwright: Playwright):
 
 @pytest.fixture
 #def chromium_page_with_state(initialize_browser_state, playwright: Playwright) -> Page:
-def chromium_page_with_state(playwright: Playwright) -> Page:
+def chromium_page_with_state(request: SubRequest, playwright: Playwright) -> Page:
     browser = playwright.chromium.launch(headless=False, slow_mo=800)
-    context = browser.new_context(storage_state="browser-state.json")
-    yield context.new_page()
+    context = browser.new_context(storage_state="browser-state.json", record_video_dir='./videos')
+    context.tracing.start(screenshots=True, snapshots=True, sources=True)
+    page = context.new_page()
+
+    yield page
+
+    context.tracing.stop(path=f'./tracing/{request.node.name}.zip')
     browser.close()
+    allure.attach.file(f'./tracing/{request.node.name}.zip', name='trace', extension='zip')
+    allure.attach.file(page.video.path(), name='video', attachment_type=AttachmentType.WEBM)

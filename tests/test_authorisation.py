@@ -5,6 +5,7 @@ from tools.allure_tags import AllureTag
 from tools.allure_epics import AllureEpic
 from tools.allure_features import AllureFeature
 from tools.allure_stories import AllureStory
+from allure_commons.types import Severity
 
 from pages.login_page import LoginPage
 from pages.registration_page import RegistrationPage
@@ -17,9 +18,13 @@ from pages.dashboard_page import DashboardPage
 @allure.epic(AllureEpic.LMS) # Добавили epic
 @allure.feature(AllureFeature.AUTHENTICATION) # Добавили feature
 @allure.story(AllureStory.AUTHORIZATION) # Добавили story
+@allure.parent_suite(AllureEpic.LMS)
+@allure.suite(AllureFeature.AUTHENTICATION)
+@allure.sub_suite(AllureStory.AUTHORIZATION)
 class TestAuthorisation:
     @allure.title('User login with correct email and password')
     @allure.tag(AllureTag.USER_LOGIN)
+    @allure.severity(Severity.BLOCKER)
     def test_successful_authorization(
             self,
             registration_page: RegistrationPage,
@@ -60,6 +65,7 @@ class TestAuthorisation:
     )
     @allure.title('User login with wrong email or password')
     @allure.tag(AllureTag.USER_LOGIN)
+    @allure.severity(Severity.CRITICAL)
     def test_wrong_email_auth(self, login_page: LoginPage, email: str, password: str):
         #allure.dynamic.title(f'User login with wrong email or password: {email}')
         login_page.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/auth/login")
@@ -70,6 +76,7 @@ class TestAuthorisation:
 
     @allure.title('Navigation from login page to registration page')
     @allure.tag(AllureTag.NAVIGATION)
+    @allure.severity(Severity.NORMAL)
     def test_navigate_from_authorization_to_registration(
             self,
             login_page: LoginPage,
@@ -82,3 +89,4 @@ class TestAuthorisation:
 
 
 # python -m pytest -k "test_wrong_email_auth" -s -v
+# python -m pytest -k "regression" --alluredir=./allure-results

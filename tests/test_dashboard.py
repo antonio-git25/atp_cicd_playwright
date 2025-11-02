@@ -5,6 +5,7 @@ from tools.allure_tags import AllureTag
 from tools.allure_epics import AllureEpic
 from tools.allure_features import AllureFeature
 from tools.allure_stories import AllureStory
+from allure_commons.types import Severity
 
 from pages.dashboard_page import DashboardPage
 
@@ -15,8 +16,12 @@ from pages.dashboard_page import DashboardPage
 @allure.epic(AllureEpic.LMS)
 @allure.feature(AllureFeature.DASHBOARD)
 @allure.story(AllureStory.DASHBOARD)
+@allure.parent_suite(AllureEpic.LMS)
+@allure.suite(AllureFeature.DASHBOARD)
+@allure.sub_suite(AllureStory.DASHBOARD)
 class TestDashboard:
     @allure.title('Check displaying of dashboard')
+    @allure.severity(Severity.NORMAL)
     def test_dashboard_displaying(self, dashboard_page_with_state: DashboardPage):
         dashboard_page_with_state.visit("https://nikita-filonov.github.io/qa-automation-engineer-ui-course/#/dashboard")
 
