@@ -5,6 +5,7 @@ from _pytest.fixtures import SubRequest
 import allure
 from allure_commons.types import AttachmentType
 from pydantic_config import settings
+from tools.mocks import mock_static_resources
 
 from pages.registration_page import RegistrationPage
 
@@ -26,6 +27,7 @@ def chromium_page(request: SubRequest, playwright: Playwright) -> Page:
         context.tracing.start(screenshots=True, snapshots=True, sources=True)
 
     page = context.new_page()
+    mock_static_resources(page)
 
     yield page
 
@@ -82,6 +84,7 @@ def chromium_page_with_state(request: SubRequest, playwright: Playwright) -> Pag
         context.tracing.start(screenshots=True, snapshots=True, sources=True)
 
     page = context.new_page()
+    mock_static_resources(page)
 
     yield page
 
