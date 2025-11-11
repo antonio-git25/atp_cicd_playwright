@@ -11,6 +11,6 @@ allure-report
 
 # testing artifacts
 *.html
-*.json
+
 videos
 tracing
