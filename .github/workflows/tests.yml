@@ -77,14 +77,6 @@ jobs:
           name: allure-results
           path: allure-results
 
-      # 6. Шаг для генерации и отображения отчёта Allure
-      - name: Build allure report
-        uses: simple-elf/allure-report-action@v1.13  # Используем готовое решение из GitHub Marketplace для генерации Allure отчёта
-        if: always()  # Этот шаг тоже всегда выполняется
-        with:
-          allure_results: allure-results  # Указываем каталог с результатами тестов
-          allure_history: allure-history  # Указываем каталог для истории отчётов Allure
-
 
   publish-report:
     if: always()
