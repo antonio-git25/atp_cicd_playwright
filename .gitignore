@@ -14,3 +14,12 @@ allure-report
 
 videos
 tracing
+htmlcov
+akka_qui
+
+
+#coverage
+coverage-results
+coverage-history.json
+coverage-report.json
+coverage.html
