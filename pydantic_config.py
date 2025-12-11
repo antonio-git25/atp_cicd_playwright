@@ -4,7 +4,7 @@ from typing import Self
 from pydantic import EmailStr, FilePath, HttpUrl, DirectoryPath, BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from tests.test_fixtures import settings
+#from tests.test_fixtures import settings
 
 
 class Browser(str, Enum):
